@@ -1,0 +1,12 @@
+.filterButtons input {
+  display: none;
+}
+
+.filterButtons label {
+  margin: 0 4px;
+  cursor: pointer;
+}
+
+.selected {
+  text-decoration: underline;
+}
