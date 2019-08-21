@@ -4,9 +4,7 @@ import { createStore } from "redux";
 import { Provider } from "react-redux";
 
 import reducer from "./reducers";
-import FilterSearch from "./components/FilterSearch";
-import FilterButtons from "./components/FilterButtons";
-import CellList from "./components/CellList";
+import CellPicker from "./components/CellPicker";
 
 import "./css/styles.css";
 
@@ -15,9 +13,7 @@ const store = createStore(reducer);
 const App = () => {
   return (
     <div className="App">
-      <FilterSearch/>
-      <FilterButtons/>
-      <CellList/>
+      <CellPicker/>
     </div>
   );
 }
