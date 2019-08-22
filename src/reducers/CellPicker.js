@@ -1,14 +1,17 @@
 import { combineReducers } from "redux";
 
-import { SET_FILTER } from "../actions/CellPicker";
+import { SET_FILTER, PICK_CELL } from "../actions/CellPicker";
 
-const filter = (state = {}, action) => {
+const FILTER_DEFAULT = {categoryId: null, text: ""};
+const filter = (state = FILTER_DEFAULT, action) => {
   switch (action.type) {
     case SET_FILTER:
       return {
         categoryId: action.categoryId,
         text: action.text
       };
+    case PICK_CELL:
+      return FILTER_DEFAULT;
     default:
       return state;
   }

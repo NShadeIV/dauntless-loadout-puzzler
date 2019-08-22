@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { UID } from "react-uid";
-import { setFilter } from "../actions/CellPicker";
+import { pickCell, setFilter } from "../actions/CellPicker";
 import { CELL, CELL_CATEGORY } from "../data";
 
 import styles from "../css/CellPicker.module.css";
@@ -22,7 +22,7 @@ const FilterButton = ({ categoryId, groupName }) => {
   const filterCategoryId = useSelector(state => state.cellPicker.filter.categoryId);
   const isChecked = filterCategoryId === categoryId;
   return (
-    <label className={isChecked && styles.selectedFilterButton}>
+    <label className={isChecked ? styles.selectedFilterButton : ""}>
       <input type="radio" name={groupName}
           onChange={() => dispatch(setFilter({ categoryId }))}
           checked={isChecked && "checked"}/>
@@ -32,6 +32,7 @@ const FilterButton = ({ categoryId, groupName }) => {
 };
 
 const CellList = () => {
+  const dispatch = useDispatch();
   const filter = useSelector(state => state.cellPicker.filter);
   
   let cells = Object.values(CELL);
@@ -43,18 +44,20 @@ const CellList = () => {
   }
 
   return (
-    <ul className={styles.cellList}>
+    <div className={styles.cellList}>
       {cells.map(({ id }) => (
-        <li>{id}</li>
+        <button key={id} onClick={() => dispatch(pickCell(id))}>
+          {id}
+        </button>
       ))}
-    </ul>
+    </div>
   );
 };
 
 
 export default () => {
   return (
-    <div className="App">
+    <>
       <SearchBox/>
       <UID name={ uid => `radio-${uid}` }>
         {uid => (
@@ -66,6 +69,6 @@ export default () => {
         )}
       </UID>
       <CellList/>
-    </div>
+    </>
   );
 }
