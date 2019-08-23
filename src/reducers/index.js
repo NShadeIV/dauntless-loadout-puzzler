@@ -28,7 +28,7 @@ const cells = (state = [], action) => {
   }
 };
 
-const cellPickerIsOpen = (state = false, action) => {
+const cellPickerIsOpen = (state = true, action) => {
   switch (action.type) {
     case OPEN_CELL_PICKER:
       return true;

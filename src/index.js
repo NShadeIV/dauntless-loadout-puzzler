@@ -9,7 +9,7 @@ import reducer from "./reducers";
 import CellPicker from "./components/CellPicker";
 import DraggableList from "./components/DraggableList";
 
-import "./css/styles.css";
+import "./css/styles.scss";
 
 const store = createStore(reducer);
 
@@ -18,26 +18,29 @@ const App = () => {
   const cellPickerIsOpen = useSelector(state => state.cellPickerIsOpen);
   const cells = useSelector(state => state.cells);
   return (
-    <div className="App">
-      {cellPickerIsOpen ? (
-        <>
-          <button onClick={() => dispatch(cancelCellPicker())}>
-            back
-          </button>
+    <>
+      <div class="main">
+        <div></div>
+        {cellPickerIsOpen ? (
           <CellPicker/>
-        </>
-      ) : (
-        <>
-          <button onClick={() => dispatch(openCellPicker())}>
-            add preference
-          </button>
-          <DraggableList
-            list={cells}
-            onReorder={e => dispatch(reorderCells(e))}
-            render={cell => cell.content}/>
-        </>
-      )}
-    </div>
+        ) : (
+          <>
+            <button onClick={() => dispatch(openCellPicker())}>
+              add preference
+            </button>
+            <DraggableList
+              list={cells}
+              onReorder={e => dispatch(reorderCells(e))}
+              render={cell => cell.content}/>
+          </>
+        )}
+      </div>
+      <footer>
+        <button onClick={() => dispatch(cancelCellPicker())}>
+          back
+        </button>
+      </footer>
+    </>
   );
 };
 
