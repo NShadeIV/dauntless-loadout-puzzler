@@ -1,4 +1,11 @@
 .menu {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin: 8px;
+  padding: 16px;
+  text-align: center;
+
   background: linear-gradient(to right,
     rgba(64,66,68,0.6) 0%,
     rgba(64,66,68,0.9) 12%,
@@ -7,6 +14,29 @@
   backdrop-filter: blur(8px);
   position: relative;
 
+  .extra { z-index: -1; }
+
+  .cellList {
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    margin: 0 -16px 0 -16px;
+    padding: 0 16px 0 16px;
+    
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+    &::-webkit-scrollbar {
+      width: 4px;
+      background-color: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: white;
+      border-radius: 2px;
+    }
+  }
+  
   &::before,
   &::after {
     content: '';

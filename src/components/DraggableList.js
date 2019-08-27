@@ -3,7 +3,7 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd"
 
 // adapted from
 // https://codepen.io/alexreardon/project/editor/ZyNMPo
-export default ({ list, render, onReorder }) => {
+export default ({ list, onReorder, className, children }) => {
   const reorderList = (result) => {
     // dropped outside the list
     if(!result.destination) {
@@ -17,6 +17,7 @@ export default ({ list, render, onReorder }) => {
         {(provided, snapshot) => (
           <div 
             ref={provided.innerRef}
+            className={className}
             {...provided.droppableProps}
           >
             {list.map((item, index) => (
@@ -26,15 +27,12 @@ export default ({ list, render, onReorder }) => {
                 index={index}
               >
                 {(provided, snapshot) => (
-                  <div>
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.dragHandleProps}
-                      {...provided.draggableProps}
-                    >
-                      {render(item)}
-                    </div>
-                    {provided.placeholder}
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.dragHandleProps}
+                    {...provided.draggableProps}
+                  >
+                    {children(item)}
                   </div>
                 )}
               </Draggable>

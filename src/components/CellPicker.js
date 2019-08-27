@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import Menu from "./Menu";
 import { CELL, CELL_CATEGORY } from "../data";
+
 import {
   SEARCH,
   ALL, CELL_CAT_NAME,
   CELL_NAME, CELL_CAT_DESC, CELL_DESC,
   NO_CELLS } from "../data/lang.en.js";
 
+import "../css/Cell.scss";
 import "../css/CellPicker.scss";
 
 const FilterButton = ({ categoryId, isSelected, onClick }) => {
@@ -33,7 +35,7 @@ const CellList = ({ filterText, filterCategory, onPickCell }) => {
         cells.map(({ id, category }) => {
           const cat = CELL_CATEGORY[category];
           return (
-            <button key={id}
+            <button key={id} className="cell"
               onClick={() => onPickCell(id)}>
               <span>
                 <img
@@ -45,7 +47,8 @@ const CellList = ({ filterText, filterCategory, onPickCell }) => {
                   <span>{CELL_DESC[id]}</span>
                 </span>
               </span>
-            </button>);
+            </button>
+          );
         })
       ) : (
         <h2>{NO_CELLS}</h2>
