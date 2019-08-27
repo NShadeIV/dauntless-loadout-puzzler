@@ -1,52 +1,64 @@
-import React from "react";
+import React, { useState } from "react";
 import { render } from "react-dom";
-import { createStore } from "redux";
-import { Provider, useDispatch, useSelector } from "react-redux";
-
-import { openCellPicker, cancelCellPicker, reorderCells } from "./actions"
-import reducer from "./reducers";
 
 import CellPicker from "./components/CellPicker";
 import DraggableList from "./components/DraggableList";
 
 import "./css/styles.scss";
 
-const store = createStore(reducer);
+const reorder = (list, startIndex, endIndex) => {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+  return result;
+};
 
 const App = () => {
-  const dispatch = useDispatch();
-  const cellPickerIsOpen = useSelector(state => state.cellPickerIsOpen);
-  const cells = useSelector(state => state.cells);
+  const [cellPickerIsOpen, setCellPickerIsOpen] = useState(false);
+  const [nextCellKey, setNextCellKey] = useState(0);
+  const [cells, setCells] = useState([]);
+  const addCellToListAndClosePicker = (cellId) => {
+    if(cellId) {
+      setCellPickerIsOpen(false);
+      setCells([...cells, {
+        id: "cell" + nextCellKey,
+        cellId: cellId
+      }]);
+      setNextCellKey(nextCellKey + 1);
+    }
+  };
   return (
     <>
-      <div class="main">
+      <div className="main">
         <div></div>
         {cellPickerIsOpen ? (
-          <CellPicker/>
+          <CellPicker key={nextCellKey}
+            onPickCell={addCellToListAndClosePicker}/>
         ) : (
-          <>
-            <button onClick={() => dispatch(openCellPicker())}>
+          <div>
+            <button onClick={() => setCellPickerIsOpen(true)}>
               add preference
             </button>
             <DraggableList
               list={cells}
-              onReorder={e => dispatch(reorderCells(e))}
-              render={cell => cell.content}/>
-          </>
+              onReorder={(startIndex, endIndex) => 
+                setCells(reorder(cells, startIndex, endIndex))}
+              render={cell => cell.cellId}/>
+          </div>
         )}
       </div>
       <footer>
-        <button onClick={() => dispatch(cancelCellPicker())}>
-          back
-        </button>
+        {cellPickerIsOpen &&
+          <button onClick={() => setCellPickerIsOpen(false)}>
+            back
+          </button>
+        }
       </footer>
     </>
   );
 };
 
 render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
+  <App />,
   document.getElementById("root")
 );

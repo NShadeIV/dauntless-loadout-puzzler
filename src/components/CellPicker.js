@@ -1,7 +1,5 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
 import classNames from "classnames";
-import { pickCell, setFilter } from "../actions/CellPicker";
 import { CELL, CELL_CATEGORY } from "../data";
 import {
   SEARCH,
@@ -12,41 +10,22 @@ import {
 import styles from "../css/CellPicker.module.scss";
 import { menu } from "../css/styles.module.css";
 
-const SearchBox = () => {
-  const dispatch = useDispatch();
-  const filterText = useSelector(state => state.cellPicker.filter.text);
-  return (
-    <input type="text" value={filterText}
-        className={styles.searchBox}
-        placeholder={SEARCH}
-        onChange={e => dispatch(setFilter({
-          text: e.target.value
-        }))}/>
-  );
-};
-
-const FilterButton = ({ categoryId }) => {
-  const dispatch = useDispatch();
-  const filterCategoryId = useSelector(state => state.cellPicker.filter.categoryId);
-  const isSelected = filterCategoryId === categoryId;
+const FilterButton = ({ categoryId, isSelected, onClick }) => {
   return (
     <button className={isSelected ? styles.selected : ""}
-        onClick={() => dispatch(setFilter({ categoryId }))}>
+        onClick={() => onClick(categoryId)}>
       <h3>{(categoryId ? CELL_CAT_NAME[categoryId] : ALL).toUpperCase()}</h3>
     </button>
   );
 };
 
-const CellList = () => {
-  const dispatch = useDispatch();
-  const filter = useSelector(state => state.cellPicker.filter);
-  
+const CellList = ({ filterText, filterCategory, onPickCell }) => {
   let cells = Object.values(CELL);
-  if(filter.categoryId) {
-    cells = cells.filter(cell => cell.category === filter.categoryId);
+  if(filterCategory) {
+    cells = cells.filter(cell => cell.category === filterCategory);
   }
-  if(filter.text) {
-    cells = cells.filter(cell => cell.id.toLowerCase().indexOf(filter.text.toLowerCase()) >= 0);
+  if(filterText) {
+    cells = cells.filter(cell => cell.id.toLowerCase().indexOf(filterText.toLowerCase()) >= 0);
   }
 
   return (
@@ -56,7 +35,7 @@ const CellList = () => {
           const cat = CELL_CATEGORY[category];
           return (
             <button key={id}
-              onClick={() => dispatch(pickCell(id))}>
+              onClick={() => onPickCell(id)}>
               <span>
                 <img
                   alt={CELL_CAT_DESC[cat.id]}
@@ -76,17 +55,32 @@ const CellList = () => {
   );
 };
 
-export default () => {
+export default ({ onPickCell }) => {
+  const [ filterText, setFilterText ] = useState("");
+  const [ filterCategory, setFilterCategory ] = useState(null);
+
   return (
     <div className={classNames(styles.cellPicker, menu)}>
-      <SearchBox/>
+      <input type="text" className={styles.searchBox}
+          placeholder={SEARCH}
+          value={filterText}
+          onChange={e => setFilterText(e.target.value)}/>
       <div className={styles.filterButtons}>
-        <FilterButton categoryId={null} key={"ALL"}/>
+        <FilterButton key={"ALL"}
+            categoryId={null}
+            isSelected={!filterCategory}
+            onClick={setFilterCategory}/>
         {Object.keys(CELL_CATEGORY).map(id => (
-          <FilterButton categoryId={id} key={id}/>
+          <FilterButton key={id}
+            categoryId={id}
+            isSelected={filterCategory === id}
+            onClick={setFilterCategory}/>
         ))}
       </div>
-      <CellList/>
+      <CellList
+        filterText={filterText}
+        filterCategory={filterCategory}
+        onPickCell={onPickCell}/>
     </div>
   );
 }

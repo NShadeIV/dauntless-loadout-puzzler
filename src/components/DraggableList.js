@@ -1,21 +1,18 @@
 import React from "react";
-
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd"
 
 // adapted from
 // https://codepen.io/alexreardon/project/editor/ZyNMPo
 export default ({ list, render, onReorder }) => {
+  const reorderList = (result) => {
+    // dropped outside the list
+    if(!result.destination) {
+      return; 
+    }
+    onReorder(result.source.index, result.destination.index);
+  };
   return (
-    <DragDropContext
-      onDragEnd={(result) => {
-        // dropped outside the list
-        if(!result.destination) {
-          return; 
-        }
-        onReorder({
-          startIndex: result.source.index,
-          endIndex: result.destination.index});
-      }}>
+    <DragDropContext onDragEnd={reorderList}>
       <Droppable droppableId="droppable">
         {(provided, snapshot) => (
           <div 
@@ -46,6 +43,6 @@ export default ({ list, render, onReorder }) => {
           </div>
         )}
       </Droppable>
-    </DragDropContext>
+      </DragDropContext>
   );
 };
