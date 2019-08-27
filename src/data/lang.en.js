@@ -2,6 +2,7 @@ export const CELL_MODIFIER = "+[number] [cell_name]";
 export const ALL = "All";
 export const NO_CELLS = "Nobody here but us charroggs!"
 export const SEARCH = "Type here to search";
+export const BACK = "BACK";
 export const CELL_CAT_NAME = {
   DEFENCE: "Defence",
   MOBILITY: "Mobility",

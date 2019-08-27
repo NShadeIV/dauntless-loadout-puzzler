@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import classNames from "classnames";
+import Menu from "./Menu";
 import { CELL, CELL_CATEGORY } from "../data";
 import {
   SEARCH,
@@ -7,12 +7,11 @@ import {
   CELL_NAME, CELL_CAT_DESC, CELL_DESC,
   NO_CELLS } from "../data/lang.en.js";
 
-import styles from "../css/CellPicker.module.scss";
-import { menu } from "../css/styles.module.css";
+import "../css/CellPicker.scss";
 
 const FilterButton = ({ categoryId, isSelected, onClick }) => {
   return (
-    <button className={isSelected ? styles.selected : ""}
+    <button className={isSelected ? "selected" : ""}
         onClick={() => onClick(categoryId)}>
       <h3>{(categoryId ? CELL_CAT_NAME[categoryId] : ALL).toUpperCase()}</h3>
     </button>
@@ -29,7 +28,7 @@ const CellList = ({ filterText, filterCategory, onPickCell }) => {
   }
 
   return (
-    <div className={styles.cellList}>
+    <div className="cellList">
       {cells.length ? (
         cells.map(({ id, category }) => {
           const cat = CELL_CATEGORY[category];
@@ -60,12 +59,12 @@ export default ({ onPickCell }) => {
   const [ filterCategory, setFilterCategory ] = useState(null);
 
   return (
-    <div className={classNames(styles.cellPicker, menu)}>
-      <input type="text" className={styles.searchBox}
+    <Menu className="cellPicker">
+      <input type="text" className="searchBox"
           placeholder={SEARCH}
           value={filterText}
           onChange={e => setFilterText(e.target.value)}/>
-      <div className={styles.filterButtons}>
+      <div className="filterButtons">
         <FilterButton key={"ALL"}
             categoryId={null}
             isSelected={!filterCategory}
@@ -81,6 +80,6 @@ export default ({ onPickCell }) => {
         filterText={filterText}
         filterCategory={filterCategory}
         onPickCell={onPickCell}/>
-    </div>
+    </Menu>
   );
 }

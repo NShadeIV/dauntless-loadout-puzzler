@@ -3,6 +3,8 @@ import { render } from "react-dom";
 
 import CellPicker from "./components/CellPicker";
 import DraggableList from "./components/DraggableList";
+import Footer from "./components/Footer";
+import { BACK } from "./data/lang.en.js";
 
 import "./css/styles.scss";
 
@@ -14,7 +16,7 @@ const reorder = (list, startIndex, endIndex) => {
 };
 
 const App = () => {
-  const [cellPickerIsOpen, setCellPickerIsOpen] = useState(false);
+  const [cellPickerIsOpen, setCellPickerIsOpen] = useState(true);
   const [nextCellKey, setNextCellKey] = useState(0);
   const [cells, setCells] = useState([]);
   const addCellToListAndClosePicker = (cellId) => {
@@ -47,13 +49,13 @@ const App = () => {
           </div>
         )}
       </div>
-      <footer>
+      <Footer>
         {cellPickerIsOpen &&
           <button onClick={() => setCellPickerIsOpen(false)}>
-            back
+            <span>{BACK}</span>
           </button>
         }
-      </footer>
+      </Footer>
     </>
   );
 };

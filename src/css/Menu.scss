@@ -1,0 +1,50 @@
+.menu {
+  background: linear-gradient(to right,
+    rgba(64,66,68,0.6) 0%,
+    rgba(64,66,68,0.9) 12%,
+    rgba(64,66,68,0.9) 88%,
+    rgba(64,66,68,0.6) 100%);
+  backdrop-filter: blur(8px);
+  position: relative;
+
+  &::before,
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(to bottom right,
+      rgba(240,244,245,0.6) 0%,
+      rgba(116,115,114,0.6) 100%);
+  }
+  &::before {
+    top: 0;
+    box-shadow:
+      0 1px 1px 1px rgba(0,0,0,0.1);
+  }
+  &::after {
+    bottom: 0;
+    box-shadow:
+      0 -1px 1px 1px rgba(0,0,0,0.1);
+  }
+
+  .extra::before,
+  .extra::after {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0; top: 0;
+    opacity: 0.3;
+    background:
+      bottom 10% left 0% / 80% no-repeat
+      url('img/npc_panel_swoosh.png');
+  }
+  .extra::after {
+    transform: rotate(180deg);
+  }
+}
+
